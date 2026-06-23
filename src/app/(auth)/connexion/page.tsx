@@ -10,6 +10,7 @@ import { motion } from "framer-motion";
 import { Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { Suspense } from "react";
 
 const schema = z.object({
   email: z.string().email("E-mail invalide"),
@@ -17,7 +18,7 @@ const schema = z.object({
 });
 type LoginForm = z.infer<typeof schema>;
 
-export default function ConnexionPage() {
+function ConnexionContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const redirect = searchParams.get("redirect") ?? "/compte";
@@ -135,5 +136,13 @@ export default function ConnexionPage() {
         </form>
       </motion.div>
     </div>
+  );
+}
+
+export default function ConnexionPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[80vh] flex items-center justify-center"><div className="animate-pulse">Chargement...</div></div>}>
+      <ConnexionContent />
+    </Suspense>
   );
 }

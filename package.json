@@ -6,6 +6,7 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
+    "deploy:vercel": "npx vercel --prod --confirm",
     "lint": "eslint .",
     "type-check": "tsc --noEmit",
     "db:types": "supabase gen types typescript --project-id $SUPABASE_PROJECT_ID > src/types/database.types.ts"

@@ -9,6 +9,7 @@ import { DEMO_PRODUCTS } from "@/data/products";
 import { CATEGORY_LABELS, GENDER_LABELS } from "@/lib/utils";
 import type { ProductCategory, Gender, ProductFilters } from "@/types";
 import { cn } from "@/lib/utils";
+import { Suspense } from "react";
 
 const SORT_OPTIONS = [
   { value: "nouveautes", label: "Nouveautés" },
@@ -26,7 +27,7 @@ const COLORS = [
   { name: "Terracotta", hex: "#B85C3E" },
 ];
 
-export default function BoutiquePage() {
+function BoutiqueContent() {
   const searchParams = useSearchParams();
   const initCategory = searchParams.get("categorie") as ProductCategory | null;
   const initGender = searchParams.get("genre") as Gender | null;
@@ -330,5 +331,13 @@ function FilterCheckbox({
         {label}
       </span>
     </label>
+  );
+}
+
+export default function BoutiquePage() {
+  return (
+    <Suspense fallback={<div className="container-premium py-20 text-center"><div className="animate-pulse">Chargement...</div></div>}>
+      <BoutiqueContent />
+    </Suspense>
   );
 }

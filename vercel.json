@@ -1,0 +1,122 @@
+{
+  "version": 2,
+  "builds": [
+    { "src": "package.json", "use": "@vercel/next" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "/" }
+  ]
+}
+{
+  "buildCommand": "npm run build",
+  "devCommand": "npm run dev",
+  "installCommand": "npm install",
+  "framework": "nextjs",
+  "nodeVersion": "20.x",
+  "env": {
+    "NEXT_PUBLIC_SUPABASE_URL": {
+      "description": "Your Supabase project URL",
+      "required": true
+    },
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": {
+      "description": "Supabase anonymous (public) key for client-side authentication",
+      "required": true
+    },
+    "SUPABASE_SERVICE_ROLE_KEY": {
+      "description": "Supabase service role key for server-side operations (keep this secret)",
+      "required": true
+    },
+    "NEXT_PUBLIC_STRIPE_PUBLIC_KEY": {
+      "description": "Stripe publishable key (starts with pk_)",
+      "required": true
+    },
+    "STRIPE_SECRET_KEY": {
+      "description": "Stripe secret key (starts with sk_)",
+      "required": true
+    },
+    "STRIPE_WEBHOOK_SECRET": {
+      "description": "Stripe webhook signing secret (starts with whsec_)",
+      "required": true
+    },
+    "NEXT_PUBLIC_PAYPAL_CLIENT_ID": {
+      "description": "PayPal Client ID for your application",
+      "required": true
+    },
+    "PAYPAL_CLIENT_SECRET": {
+      "description": "PayPal Client Secret (keep this secret)",
+      "required": true
+    },
+    "PAYPAL_ENV": {
+      "description": "PayPal environment: 'sandbox' for testing or 'production'",
+      "required": true
+    },
+    "NEXT_PUBLIC_SITE_URL": {
+      "description": "Your production URL (e.g., https://atlas-leather.com)",
+      "required": true
+    },
+    "EXCHANGE_RATE_API_KEY": {
+      "description": "Optional: API key for real-time currency exchange rates (Open Exchange Rates)",
+      "required": false
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-cache, no-store, must-revalidate"
+        }
+      ]
+    },
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "X-XSS-Protection",
+          "value": "1; mode=block"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/shop",
+      "destination": "/boutique",
+      "permanent": true
+    },
+    {
+      "source": "/cart",
+      "destination": "/panier",
+      "permanent": true
+    },
+    {
+      "source": "/checkout",
+      "destination": "/paiement",
+      "permanent": true
+    },
+    {
+      "source": "/order/:ref",
+      "destination": "/commande-confirmee?ref=:ref",
+      "permanent": false
+    }
+  ],
+  "functions": {
+    "api/**": {
+      "maxDuration": 30
+    }
+  },
+  "regions": ["iad1"]
+}

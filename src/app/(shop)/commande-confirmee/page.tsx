@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 import { CheckCircle, ArrowRight, Package } from "lucide-react";
+import { Suspense } from "react";
 
-export default function CommandeConfirmeePage() {
+function CommandeConfirmeeContent() {
   const params = useSearchParams();
   const ref = params.get("ref") ?? "—";
 
@@ -64,5 +65,13 @@ export default function CommandeConfirmeePage() {
         </div>
       </motion.div>
     </div>
+  );
+}
+
+export default function CommandeConfirmeePage() {
+  return (
+    <Suspense fallback={<div className="container-premium py-24 text-center"><div className="animate-pulse">Chargement...</div></div>}>
+      <CommandeConfirmeeContent />
+    </Suspense>
   );
 }
