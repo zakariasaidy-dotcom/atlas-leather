@@ -4,27 +4,17 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { motion, AnimatePresence } from "framer-motion";
 import { CreditCard, PackageCheck, ChevronRight, Lock } from "lucide-react";
 import { toast } from "sonner";
 import { useCartStore } from "@/store/cart.store";
 import { formatPrice, calculateShipping } from "@/lib/utils";
+import { addressSchema } from "@/lib/validations/schemas";
+import { Field, inputClass, selectClass } from "@/components/form/FormHelpers";
 import type { PaymentMethod } from "@/types";
 import Image from "next/image";
 
-const addressSchema = z.object({
-  fullName: z.string().min(2, "Nom complet requis"),
-  phone: z.string().min(8, "Numéro de téléphone invalide"),
-  email: z.string().email("E-mail invalide"),
-  addressLine1: z.string().min(5, "Adresse requise"),
-  addressLine2: z.string().optional(),
-  city: z.string().min(2, "Ville requise"),
-  postalCode: z.string().min(4, "Code postal requis"),
-  country: z.string().min(2, "Pays requis"),
-});
-
-type AddressForm = z.infer<typeof addressSchema>;
+type AddressForm = typeof addressSchema._type;
 
 const COUNTRIES = [
   { value: "MA", label: "Maroc" },
